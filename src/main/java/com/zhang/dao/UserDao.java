@@ -1,5 +1,6 @@
 package com.zhang.dao;
 
+import com.zhang.dto.UserDto;
 import com.zhang.entity.User;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository("userDao")
 public interface UserDao {
 
-    User findByUsername(String userName);
+    UserDto findByUserName(String userName);
 
 }

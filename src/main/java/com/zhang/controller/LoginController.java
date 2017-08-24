@@ -14,6 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LoginController {
 
+    /**
+     * 跳转到登录页面
+     * @param req
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/login")
     public String showLoginForm(HttpServletRequest req, Model model) {
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");

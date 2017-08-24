@@ -1,5 +1,6 @@
 package com.zhang.entity;
 
+import com.zhang.dto.UserDto;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +26,21 @@ public class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(UserDto userDto) {
+        this.id = userDto.getId();
+        this.organizationId = userDto.getOrganizationId();
+        this.username = userDto.getUsername();
+        this.password = userDto.getPassword();
+        this.salt = userDto.getSalt();
+        this.locked = userDto.getLocked();
+        String[] roleIdsArray = userDto.getRoleIds().split(",");
+        List<Long> roleIds = new ArrayList<Long>();
+        for (String roleIdStr : roleIdsArray) {
+            roleIds.add(Long.parseLong(roleIdStr));
+        }
+        this.roleIds = roleIds;
     }
 
     public Long getId() {
