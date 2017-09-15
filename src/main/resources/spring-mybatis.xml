@@ -71,6 +71,10 @@
         <property name="dataSource" ref="dataSource"/>
         <!-- 自动扫描mapper.xml文件 -->
         <property name="mapperLocations" value="classpath:com/zhang/mapping/*.xml "></property>
+        <!-- MybatisSpringPageInterceptor分页拦截器 -->
+        <property name="plugins">
+            <bean class="com.zhang.util.MybatisSpringPageInterceptor"></bean>
+        </property>
     </bean>
 
     <!-- DAO接口所在包名，Spring会自动查找其下的类 -->

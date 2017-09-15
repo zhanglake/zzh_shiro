@@ -44,6 +44,17 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    public Set<String> findPermissions(List<Resource> resources) {
+        Set<String> permissions = new HashSet<String>();
+        for(Resource resource : resources) {
+            if(resource != null && !StringUtils.isEmpty(resource.getPermission())) {
+                permissions.add(resource.getPermission());
+            }
+        }
+        return permissions;
+    }
+
+    @Override
     public List<Resource> findMenus(Set<String> permissions) {
         List<Resource> allResources = this.findAll();
         List<Resource> menus = new ArrayList<Resource>();

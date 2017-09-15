@@ -2,12 +2,12 @@ package com.zhang.service;
 
 import com.zhang.dao.UserDao;
 import com.zhang.dto.UserDto;
+import com.zhang.entity.Role;
 import com.zhang.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by zhenghua.zhang on 2017/8/22.
@@ -22,17 +22,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String userName) {
-        UserDto userDto = userDao.findByUserName(userName);
-        return new User(userDto);
+        User user = userDao.findByUserNameWithRole(userName);
+        return user;
     }
 
     @Override
     public Set<String> findPermissions(String username) {
         User user = this.findByUsername(username);
-        if(user == null) {
+        if(null == user) {
             return Collections.EMPTY_SET;
         }
-        return roleService.findPermissions(user.getRoleIds().toArray(new Long[0]));
+        List<Long> roleIds = new ArrayList<Long>();
+        for (Role role : user.getRoles()) {
+            roleIds.add(role.getId());
+        }
+        return roleService.findPermissions(roleIds);
     }
 
     @Override
@@ -41,6 +45,10 @@ public class UserServiceImpl implements UserService {
         if(user == null) {
             return Collections.EMPTY_SET;
         }
-        return roleService.findRoles(user.getRoleIds().toArray(new Long[0]));
+        Set<String> roleNameSet = new HashSet<String>();
+        for (Role role : user.getRoles()) {
+            roleNameSet.add(role.getName());
+        }
+        return roleNameSet;
     }
 }

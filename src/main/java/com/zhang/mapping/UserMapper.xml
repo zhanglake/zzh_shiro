@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhang.dao.UserDao">
-    <resultMap id="DtoResultMap" type="com.zhang.dto.UserDto" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="organization_id" property="organizationId" jdbcType="INTEGER" />
+    <resultMap id="ResultMap" type="com.zhang.entity.User" >
+        <id column="user_id" property="id" jdbcType="INTEGER" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="salt" property="salt" jdbcType="VARCHAR" />
-        <result column="role_ids" property="roleIds" jdbcType="VARCHAR" />
         <result column="locked" property="locked" jdbcType="INTEGER" />
+        <collection property="roles" ofType="com.zhang.entity.Role">
+            <id column="role_id" property="id" jdbcType="INTEGER" />
+            <result column="role_name" property="name" jdbcType="VARCHAR" />
+        </collection>
     </resultMap>
 
-    <select id="findByUserName" resultMap="DtoResultMap" parameterType="String">
-        SELECT * FROM sys_user WHERE username = #{userName}
+    <select id="findByUserNameWithRole" resultMap="ResultMap" parameterType="String">
+        SELECT * FROM sys_user u
+        INNER JOIN sys_user_role ur ON u.user_id = ur.user_id
+        WHERE u.username = #{userName}
     </select>
 
 </mapper>

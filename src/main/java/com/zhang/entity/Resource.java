@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by zhenghua.zhang on 2017/8/22.
  */
-public class Resource implements Serializable {
+public class Resource extends BaseEntity {
     private Long id; //编号
     private String name; //资源名称
     private ResourceType type = ResourceType.menu; //资源类型
