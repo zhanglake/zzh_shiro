@@ -37,6 +37,11 @@ public class RoleController {
         return "role/role-list";
     }
 
+    /**
+     * 角色列表
+     * @param request
+     * @return
+     */
     @RequiresPermissions("role:view")
     @RequestMapping(value = "/table", method = RequestMethod.POST)
     @ResponseBody
@@ -46,6 +51,11 @@ public class RoleController {
         return page;
     }
 
+    /**
+     * 新增 -- 页面
+     * @param model
+     * @return
+     */
     @RequiresPermissions("role:create")
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String showCreateForm(Model model) {
@@ -54,6 +64,12 @@ public class RoleController {
         return "role/role-edit";
     }
 
+    /**
+     * 新增角色
+     * @param dto
+     * @param model
+     * @return
+     */
     @RequiresPermissions("role:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
@@ -63,6 +79,11 @@ public class RoleController {
         return new Result();
     }
 
+    /**
+     * 删除角色
+     * @param id
+     * @return
+     */
     @RequiresPermissions("role:delete")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
@@ -71,6 +92,12 @@ public class RoleController {
         return new Result();
     }
 
+    /**
+     * 禁用 / 启用
+     * @param id
+     * @param status
+     * @return
+     */
     @RequiresPermissions("role:update")
     @RequestMapping(value = "/status", method = RequestMethod.POST)
     @ResponseBody
@@ -79,6 +106,12 @@ public class RoleController {
         return new Result();
     }
 
+    /**
+     * 修改 - 页面
+     * @param id
+     * @param model
+     * @return
+     */
     @RequiresPermissions("role:update")
     @RequestMapping(value = "/update", method = RequestMethod.GET)
     public String updatePage(@RequestParam Long id, Model model) {
@@ -86,6 +119,15 @@ public class RoleController {
         model.addAttribute("role", roleService.findOne(id));
         model.addAttribute("op", "修改");
         return "role/role-edit";
+    }
+
+    @RequiresPermissions("role:update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Result update(@RequestBody RoleEditDto dto, Model model) {
+        roleService.createOrUpdateRole(dto);
+        model.addAttribute("msg", "修改成功");
+        return new Result();
     }
 
     private void setCommonData(Model model) {

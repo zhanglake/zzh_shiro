@@ -1,5 +1,6 @@
 package com.zhang.service;
 
+import com.zhang.dto.ResourceDto;
 import com.zhang.entity.Resource;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface ResourceService {
     Set<String> findPermissions(List<Resource> resources);
 
     List<Resource> findMenus(Set<String> permissions);
+
+    void createOrUpdateResource(ResourceDto dto);
 
 }

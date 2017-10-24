@@ -42,24 +42,6 @@
         LEFT JOIN sys_resource r2 ON r2.resource_id = rr.resource_id
     </select>
 
-    <!-- 根据条件筛选 -->
-    <!--<select id="selectBySelective" resultMap="ResultMap" parameterType="com.zhang.entity.Page">-->
-        <!--SELECT * FROM sys_role r1-->
-        <!--LEFT JOIN sys_role_resource rr ON r1.role_id = rr.role_id-->
-        <!--LEFT JOIN sys_resource r2 ON r2.resource_id = rr.resource_id-->
-        <!--<where>-->
-            <!--<if test="params.searchText != null and params.searchText != ''">-->
-                <!--r1.role_name like #{params.searchText}-->
-                <!--or r1.description like #{params.searchText}-->
-                <!--and-->
-            <!--</if>-->
-            <!--r1.deleted = 0-->
-        <!--</where>-->
-        <!--<if test="params.orderByClause != null and params.orderByClause !=''">-->
-          <!--order by #{params.orderByClause}-->
-        <!--</if>-->
-    <!--</select>-->
-
     <select id="findOne" resultMap="ResultMap" parameterType="java.lang.Long">
         SELECT * FROM sys_role r1
         LEFT JOIN sys_role_resource rr ON r1.role_id = rr.role_id
@@ -92,10 +74,21 @@
         #{name}, #{description}, #{available})
     </insert>
 
-    <insert id="addRoleReource" parameterType="java.util.List">
+    <insert id="addRoleResource" parameterType="java.util.List">
         INSERT INTO sys_role_resource VALUES
         <foreach collection="list" item="item" index="index" separator=",">
             (#{item.roleId}, #{item.resourceId})
         </foreach>
     </insert>
+
+    <update id="updateRole" parameterType="com.zhang.entity.Role">
+        UPDATE sys_role
+        SET role_name = #{name}, description = #{description}, modified_date = #{modifiedDate}, modified_by = #{modifiedBy}
+        WHERE role_id = #{id}
+    </update>
+
+    <delete id="deleteRoleResource" parameterType="java.lang.Long">
+        DELETE FROM sys_role_resource
+        WHERE role_id = #{id}
+    </delete>
 </mapper>

@@ -27,5 +27,9 @@ public interface RoleDao {
 
     void createRole(Role role);
 
-    void addRoleReource(List list);
+    void addRoleResource(List list);
+
+    void updateRole(Role role);
+
+    void deleteRoleResource(Long id);
 }

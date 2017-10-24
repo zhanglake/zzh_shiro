@@ -5,25 +5,38 @@ var RoleEditController = {
         $("#menuBtn").click(RoleEditController.showMenu);
         // 保存
         $("#save").click(function () {
+            var role_id = $("#id").val();
             var role_name = $("#name").val();
             var description = $("#description").val();
             var resourceIds = $("#resourceIds").val();
             var resourcesArray = resourceIds ? resourceIds.split(",") : [];
             var data = {
-                id: null,
+                id: role_id ? role_id : null,
                 roleName: role_name,
                 description: description,
                 resourceIds: resourcesArray
-            };
-            $.ajax({
-                url: "create",
-                type: "post",
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success: function (data) {
-                    window.location = "../role";
-                }
-            });
+            }
+            if (role_id) {
+                $.ajax({
+                    url: "update",
+                    type: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        window.location = "../role";
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "create",
+                    type: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        window.location = "../role";
+                    }
+                });
+            }
         });
     },
     // 树状图配置

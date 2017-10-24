@@ -1,6 +1,7 @@
 package com.zhang.service;
 
 import com.zhang.dao.ResourceDao;
+import com.zhang.dto.ResourceDto;
 import com.zhang.entity.Resource;
 import org.apache.shiro.authz.permission.WildcardPermission;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,40 @@ public class ResourceServiceImpl implements ResourceService {
             menus.add(resource);
         }
         return menus;
+    }
+
+    @Override
+    public void createOrUpdateResource(ResourceDto dto) {
+        Long id = dto.getId();
+        Resource resource = null;
+        if (null == id) {
+            resource = new Resource();
+            resource.setName(dto.getName());
+            resource.setPermission(dto.getPermission());
+            resource.setUrl(dto.getUrl());
+            resource.setParentId(dto.getParentId());
+            resource.setAvailable(Boolean.TRUE);
+            if ("menu".equals(dto.getType())) {
+                resource.setType(Resource.ResourceType.menu);
+            } else {
+                resource.setType(Resource.ResourceType.button);
+            }
+            resourceDao.createResource(resource);
+        } else {
+            resource = new Resource();
+            resource.setId(id);
+            resource.setName(dto.getName());
+            resource.setPermission(dto.getPermission());
+            resource.setUrl(dto.getUrl());
+            resource.setParentId(dto.getParentId());
+            resource.setAvailable(Boolean.TRUE);
+            if ("menu".equals(dto.getType())) {
+                resource.setType(Resource.ResourceType.menu);
+            } else {
+                resource.setType(Resource.ResourceType.button);
+            }
+            resourceDao.updateResource(resource);
+        }
     }
 
     private boolean hasPermission(Set<String> permissions, Resource resource) {

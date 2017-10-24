@@ -130,19 +130,36 @@ public class RoleServiceImpl implements RoleService {
             role.setAvailable(Boolean.TRUE);
             roleDao.createRole(role);
             // 插入中间表
-            List<RoleResourceDto> dtos = new ArrayList<RoleResourceDto>();
+            List<RoleResourceDto> roleResourceDtos = new ArrayList<RoleResourceDto>();
             for (Long resourceId : dto.getResourceIds()) {
                 if (null != role.getId()) {
                     RoleResourceDto roleResourceDto = new RoleResourceDto(role.getId(), resourceId);
-                    dtos.add(roleResourceDto);
+                    roleResourceDtos.add(roleResourceDto);
                 }
             }
-            if (dtos.size() > 0) {
-                roleDao.addRoleReource(dtos);
+            if (roleResourceDtos.size() > 0) {
+                roleDao.addRoleResource(roleResourceDtos);
             }
         } else {
             // 修改
-
+            role = this.findOne(dto.getId());
+            role.setName(dto.getRoleName());
+            role.setDescription(dto.getDescription());
+            role.setModifiedDate(new Date());
+            role.setModifiedBy("系统修改");
+            roleDao.updateRole(role);
+            // 修改中间表 -- 先删除后新增
+            roleDao.deleteRoleResource(dto.getId());
+            List<RoleResourceDto> roleResourceDtos = new ArrayList<RoleResourceDto>();
+            for (Long resourceId : dto.getResourceIds()) {
+                if (null != role.getId()) {
+                    RoleResourceDto roleResourceDto = new RoleResourceDto(role.getId(), resourceId);
+                    roleResourceDtos.add(roleResourceDto);
+                }
+            }
+            if (roleResourceDtos.size() > 0) {
+                roleDao.addRoleResource(roleResourceDtos);
+            }
         }
         return role;
     }

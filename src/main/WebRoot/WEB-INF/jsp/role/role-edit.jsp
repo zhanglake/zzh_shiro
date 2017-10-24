@@ -21,7 +21,7 @@
 </head>
 <body>
     <form>
-        <input id="id" type="text" style="display: none"/>
+        <input id="id" type="text" style="display: none" value="${role.id}"/>
         <input id="available" type="text" style="display: none"/>
         <div class="form-group">
             <label for="name">角色名:</label>

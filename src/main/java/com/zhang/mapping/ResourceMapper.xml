@@ -12,6 +12,11 @@
         <result column="available" property="available" jdbcType="INTEGER" />
     </resultMap>
 
+    <!-- 可以复用的sql片段 -->
+    <sql id="Base_Insert_Column_List">
+        (created_date, created_by, modified_date, modified_by, resource_name, type, url, parent_id, permission, available)
+    </sql>
+
     <select id="findOne" resultMap="ResultMap" parameterType="java.lang.Long">
         SELECT * FROM sys_resource WHERE resource_id = #{resourceId}
     </select>
@@ -19,5 +24,19 @@
     <select id="findAll" resultMap="ResultMap">
         SELECT * FROM sys_resource
     </select>
+
+    <insert id="createResource" useGeneratedKeys="true" keyProperty="id" parameterType="com.zhang.entity.Resource">
+        INSERT INTO sys_role
+        <include refid="Base_Insert_Column_List"/>
+        VALUES (#{createdDate}, #{createdBy}, #{modifiedDate}, #{modifiedBy},
+        #{name}, #{type}, #{url}, #{parentId}, #{permission}, #{available})
+    </insert>
+
+    <update id="updateResource" parameterType="com.zhang.entity.Role">
+        UPDATE sys_role
+        SET resource_name = #{name}, type = #{type}, url = #{url},
+        permission = #{permission} modified_date = #{modifiedDate}, modified_by = #{modifiedBy}
+        WHERE resource_id = #{id}
+    </update>
 
 </mapper>

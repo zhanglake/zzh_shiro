@@ -21,7 +21,7 @@
 </head>
 <body>
     <form>
-        <input id="id" type="text" style="display: none"/>
+        <input id="id" type="text" style="display: none" value="${role.id}"/>
         <input id="available" type="text" style="display: none"/>
         <div class="form-group">
             <label for="name">角色名:</label>
@@ -33,7 +33,7 @@
         </div>
         <div class="form-group">
             <label for="resourceName">拥有的资源列表:</label>
-            <input type="text" id="resourceIds"/>
+            <input type="text" id="resourceIds" style="display: none;"/>
             <input type="text" id="resourceName" name="resourceName" value="" readonly>
             <a id="menuBtn" href="#">选择</a>
         </div>

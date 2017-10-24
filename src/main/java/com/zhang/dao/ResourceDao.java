@@ -14,4 +14,8 @@ public interface ResourceDao {
     Resource findOne(Long resourceId);
 
     List<Resource> findAll();
+
+    void createResource(Resource resource);
+
+    void updateResource(Resource resource);
 }
