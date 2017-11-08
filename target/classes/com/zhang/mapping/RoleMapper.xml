@@ -51,8 +51,11 @@
     </select>
 
     <select id="findAll" resultMap="ResultMap">
-        SELECT * FROM sys_role
-        WHERE deleted = 0
+        SELECT * FROM sys_role WHERE deleted = 0
+    </select>
+    
+    <select id="findLikeName" resultMap="ResultMap" parameterType="java.lang.String">
+        SELECT * FROM sys_role WHERE role_name LIKE #{name} AND deleted = 0
     </select>
 
     <update id="updateToDelete" parameterType="java.lang.Long">

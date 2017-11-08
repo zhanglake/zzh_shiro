@@ -29,5 +29,6 @@ public interface RoleService {
 
     Role createOrUpdateRole(RoleEditDto dto);
 
+    List<Role> findForAutoComplete(String name);
 
 }

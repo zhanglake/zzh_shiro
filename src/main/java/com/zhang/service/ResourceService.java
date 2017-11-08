@@ -21,6 +21,16 @@ public interface ResourceService {
 
     List<Resource> findMenus(Set<String> permissions);
 
+    /**
+     * 新增或删除
+     * @param dto
+     */
     void createOrUpdateResource(ResourceDto dto);
+
+    /**
+     * 删除
+     * @param id
+     */
+    void deleteResource(Long id);
 
 }

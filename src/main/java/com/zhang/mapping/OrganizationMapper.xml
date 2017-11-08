@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhang.dao.OrganizationDao">
+    <resultMap id="ResultMap" type="com.zhang.entity.Organization" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="name" property="name" jdbcType="VARCHAR" />
+        <id column="parent_id" property="parentId" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="findAll" resultMap="ResultMap">
+        SELECT * FROM sys_organization WHERE deleted = 0
+    </select>
+
+    <select id="findLikeName" resultMap="ResultMap" parameterType="java.lang.String">
+        SELECT * FROM sys_organization WHERE name LIKE #{name} AND deleted = 0
+    </select>
+
+</mapper>

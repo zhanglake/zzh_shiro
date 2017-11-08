@@ -12,7 +12,7 @@ public class User extends BaseEntity {
     private Long id;
 
 //    @Column(name = "organization_id", length = 50)
-//    private Oragnization oragnization; //所属公司
+    private Organization organization; //所属公司
 
     private String username;
 
@@ -81,5 +81,14 @@ public class User extends BaseEntity {
 
     public String getCredentialsSalt() {
         return username + salt;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    public Organization getOrganization() {
+
+        return organization;
     }
 }

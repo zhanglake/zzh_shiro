@@ -33,17 +33,18 @@
             <td>
                 <shiro:hasPermission name="resource:create">
                     <c:if test="${resource.type ne 'button'}">
-                        <a href="javascript:void(0);" class="add-node" name="${resource.id}">添加子节点</a>
+                        <a href="javascript:void(0);" class="add-node" data-id="${resource.id}" data-name="${resource.name}">添加子节点</a>
                     </c:if>
                 </shiro:hasPermission>
 
                 <shiro:hasPermission name="resource:update">
-                    <a href="${pageContext.request.contextPath}/resource/${resource.id}/update">修改</a>
+                    <a href="javascript:void(0);" class="update-node" data-id="${resource.id}" data-name="${resource.name}"
+                            data-type="${resource.type}" data-url="${resource.url}" data-permission="${resource.permission}">修改</a>
                 </shiro:hasPermission>
 
                 <c:if test="${not resource.rootNode}">
                     <shiro:hasPermission name="resource:delete">
-                        <a class="deleteBtn" href="#" data-id="${resource.id}">删除</a>
+                        <a href="javascript:void(0);" class="delete-node" data-id="${resource.id}">删除</a>
                     </shiro:hasPermission>
                 </c:if>
             </td>
@@ -51,16 +52,19 @@
     </c:forEach>
     </tbody>
 </table>
-<script src="static/jquery-1.11.1.js"></script>
-<script src="static/plugin/jquery-treetable/javascripts/src/jquery.treetable.js"></script>
-<script src="static/js/resource.js"></script>
+<script type="text/javascript" src="static/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="static/plugin/jquery-treetable/javascripts/src/jquery.treetable.js"></script>
+<script type="text/javascript" src="static/plugin/jquery-confirm.min.js"></script>
+<script type="text/javascript" src="static/plugin/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="static/plugin/notify.min.js"></script>
+<script type="text/javascript" src="static/plugin/ajaxError.js"></script>
+<script type="text/javascript" src="static/js/resource.js"></script>
 
-<!-- 新增子节点 -->
+<!-- 新增节点 -->
 <div id="dialog_add" style="display: none;">
-    <input id="id" name="id" type="text" style="display: none" value="${parent.id}"/>
     <div class="form-group">
         <label>父节点名称：</label>
-        ${parent.name}
+        <label id="pname" type="text"></label>
     </div>
     <div class="form-group">
         <label>子节点名称：</label>

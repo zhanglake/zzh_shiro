@@ -164,4 +164,19 @@ public class RoleServiceImpl implements RoleService {
         return role;
     }
 
+    @Override
+    public List<Role> findForAutoComplete(String name) {
+        List<Role> roles = null;
+        if (null == name || "".equals(name)) {
+            roles = roleDao.findAll();
+            return roles;
+        }
+        String roleName = "%" + name + "%";
+        roles = roleDao.findLikeName(roleName);
+        for (Role role : roles) {
+            role.setResources(null);
+        }
+        return roles;
+    }
+
 }

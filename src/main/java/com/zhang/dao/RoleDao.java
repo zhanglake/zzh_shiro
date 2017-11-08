@@ -17,6 +17,8 @@ public interface RoleDao {
 
     List<Role> findAll();
 
+    List<Role> findLikeName(String name);
+
     List<Role> selectBySelective(Page page);
 
     void updateToDelete(Long id);

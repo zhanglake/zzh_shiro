@@ -22,20 +22,26 @@
     </select>
 
     <select id="findAll" resultMap="ResultMap">
-        SELECT * FROM sys_resource
+        SELECT * FROM sys_resource WHERE deleted = 0
     </select>
 
     <insert id="createResource" useGeneratedKeys="true" keyProperty="id" parameterType="com.zhang.entity.Resource">
-        INSERT INTO sys_role
+        INSERT INTO sys_resource
         <include refid="Base_Insert_Column_List"/>
         VALUES (#{createdDate}, #{createdBy}, #{modifiedDate}, #{modifiedBy},
         #{name}, #{type}, #{url}, #{parentId}, #{permission}, #{available})
     </insert>
 
     <update id="updateResource" parameterType="com.zhang.entity.Role">
-        UPDATE sys_role
+        UPDATE sys_resource
         SET resource_name = #{name}, type = #{type}, url = #{url},
-        permission = #{permission} modified_date = #{modifiedDate}, modified_by = #{modifiedBy}
+        permission = #{permission}, modified_date = #{modifiedDate}, modified_by = #{modifiedBy}
+        WHERE resource_id = #{id}
+    </update>
+
+    <update id="deleteResource" parameterType="java.lang.Long">
+        UPDATE sys_resource
+        SET deleted = 1
         WHERE resource_id = #{id}
     </update>
 

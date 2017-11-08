@@ -25,6 +25,12 @@ public class Result {
         this.message = "操作成功";
     }
 
+    public Result(String message) {
+        this.code = 200;
+        this.status = ResultStatus.SUCCESS;
+        this.message = message;
+    }
+
     public Result(Integer code, ResultStatus status, String message) {
         this.code = code;
         this.status = status;

@@ -18,4 +18,6 @@ public interface ResourceDao {
     void createResource(Resource resource);
 
     void updateResource(Resource resource);
+
+    void deleteResource(Long id);
 }

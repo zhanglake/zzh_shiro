@@ -8,10 +8,8 @@ public class ResourceDto {
     private String name;
     private String type;
     private Long parentId;
-
     // 地址
     private String url;
-
     //权限字符串
     private String permission;
 

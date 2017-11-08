@@ -41,23 +41,51 @@ public class ResourceController {
 
     @RequiresPermissions("resource:view")
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.GET)
-    public String addPage(@PathVariable("parentId") Long parentId, Model model) {
+    @ResponseBody
+    public Resource addPage(@PathVariable("parentId") Long parentId, Model model) {
         Resource parent = resourceService.findOne(parentId);
         model.addAttribute("parent", parent);
-        Resource child = new Resource();
-        child.setParentId(parentId);
-        child.setParentIds(parent.makeSelfAsParentIds());
-        model.addAttribute("resource", child);
-        return "resource/resource-add";
+        return parent;
     }
 
-    @RequiresPermissions("role:create")
+    /**
+     * 新增
+     * @param dto
+     * @return
+     */
+    @RequiresPermissions("resource:create")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public Result createResource(@RequestBody ResourceDto dto, Model model) {
+    public Result createResource(@RequestBody ResourceDto dto) {
         resourceService.createOrUpdateResource(dto);
-        model.addAttribute("msg", "新增成功");
-        return new Result();
+        return new Result("新增节点成功");
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @RequiresPermissions("resource:delete")
+    @RequestMapping(value = "/{resourceId}/delete", method = RequestMethod.GET)
+    @ResponseBody
+    public Result deleteResource(@PathVariable("resourceId") Long id) {
+        resourceService.deleteResource(id);
+        return new Result("删除节点成功");
+    }
+
+    /**
+     * 修改
+     * @param dto
+     * @param model
+     * @return
+     */
+    @RequiresPermissions("resource:update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Result updateResource(@RequestBody ResourceDto dto, Model model) {
+        resourceService.createOrUpdateResource(dto);
+        return new Result("修改节点成功");
     }
 
 }

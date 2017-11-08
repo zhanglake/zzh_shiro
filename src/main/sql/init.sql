@@ -62,6 +62,20 @@ create table sys_role_resource (
 ) charset=utf8 ENGINE=InnoDB;
 
 
+--organization
+create table sys_organization (
+  id bigint auto_increment,
+	created_date datetime,
+	created_by varchar(100),
+	modified_date datetime,
+	modified_by varchar(100),
+	deleted bool default false,
+  name varchar(100),
+  parent_id bigint,
+  constraint pk_sys_organization primary key(id)
+) charset=utf8 ENGINE=InnoDB;
+create index idx_sys_organization_parent_id on sys_organization(parent_id);
+
 delete from sys_user;
 delete from sys_role;
 delete from sys_resource;

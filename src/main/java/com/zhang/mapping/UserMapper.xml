@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhang.dao.UserDao">
+    <resultMap id="OrgMap" type="com.zhang.entity.Organization" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <id column="name" property="name" jdbcType="VARCHAR" />
+        <id column="parent_id" property="parentId" jdbcType="INTEGER" />
+    </resultMap>
     <resultMap id="ResultMap" type="com.zhang.entity.User" >
         <id column="user_id" property="id" jdbcType="INTEGER" />
         <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="salt" property="salt" jdbcType="VARCHAR" />
         <result column="locked" property="locked" jdbcType="INTEGER" />
+        <association property="organization" resultMap="OrgMap" />
         <collection property="roles" ofType="com.zhang.entity.Role">
             <id column="role_id" property="id" jdbcType="INTEGER" />
             <result column="role_name" property="name" jdbcType="VARCHAR" />
@@ -18,5 +24,39 @@
         INNER JOIN sys_user_role ur ON u.user_id = ur.user_id
         WHERE u.username = #{userName}
     </select>
+
+    <select id="findAllUsers" resultMap="ResultMap">
+        SELECT * FROM sys_user WHERE deleted = 0
+    </select>
+    
+    <select id="findAllPageable" resultMap="ResultMap" parameterType="com.zhang.dto.TableRequest">
+        Select * FROM sys_user u
+        LEFT JOIN sys_user_role ur ON ur.user_id = u.user_id
+        LEFT JOIN sys_role r ON r.role_id = ur.role_id
+        LEFT JOIN sys_organization o ON o.id = u.organization_id
+        WHERE u.deleted = 0
+        <if test="searchText != null and searchText != ''">
+            AND u.username LIKE #{searchText}
+        </if>
+        ORDER BY u.user_id DESC
+        LIMIT #{pageNumber}, #{pageSize}
+    </select>
+
+    <select id="findAllCount" resultType="java.lang.Long" parameterType="com.zhang.dto.TableRequest">
+        SELECT count(*) FROM sys_user
+        WHERE deleted = 0
+        <if test="searchText != null and searchText != ''">
+            AND username LIKE #{searchText}
+        </if>
+    </select>
+
+    <update id="deleteOne" parameterType="java.lang.Long">
+        UPDATE sys_user SET deleted = 1 WHERE user_id = #{id}
+    </update>
+
+    <update id="changeStatus">
+        UPDATE sys_user SET locked = #{1}
+        WHERE user_id = #{0}
+    </update>
 
 </mapper>

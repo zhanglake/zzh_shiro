@@ -130,6 +130,19 @@ public class RoleController {
         return new Result();
     }
 
+    /**
+     * 为autocomplete控件查找
+     * @param name
+     * @return
+     */
+    @RequiresPermissions("role:view")
+    @RequestMapping(value = "all", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Role> findForAutoComplete(@RequestBody String name) {
+        List<Role> roles = roleService.findForAutoComplete(name);
+        return roles;
+    }
+
     private void setCommonData(Model model) {
         model.addAttribute("resourceList", resourceService.findAll());
     }

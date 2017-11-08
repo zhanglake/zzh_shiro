@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by zhenghua.zhang on 2017/8/22.
@@ -94,11 +91,11 @@ public class ResourceServiceImpl implements ResourceService {
         } else {
             resource = new Resource();
             resource.setId(id);
+            resource.setModifiedDate(new Date());
+            resource.setModifiedBy("系统修改");
             resource.setName(dto.getName());
             resource.setPermission(dto.getPermission());
             resource.setUrl(dto.getUrl());
-            resource.setParentId(dto.getParentId());
-            resource.setAvailable(Boolean.TRUE);
             if ("menu".equals(dto.getType())) {
                 resource.setType(Resource.ResourceType.menu);
             } else {
@@ -106,6 +103,11 @@ public class ResourceServiceImpl implements ResourceService {
             }
             resourceDao.updateResource(resource);
         }
+    }
+
+    @Override
+    public void deleteResource(Long id) {
+        resourceDao.deleteResource(id);
     }
 
     private boolean hasPermission(Set<String> permissions, Resource resource) {
