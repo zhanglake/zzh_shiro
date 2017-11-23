@@ -6,7 +6,7 @@ package com.zhang.entity;
 public class Result {
 
     public static enum ResultStatus {
-        SUCCESS("成功"), FAIL("失败");
+        SUCCESS("成功"), DANGER("失败"), WARNING("警告"), INFO("提示");
 
         private String status;
 

@@ -1,6 +1,7 @@
 package com.zhang.controller;
 
 import com.zhang.dto.RoleEditDto;
+import com.zhang.dto.Select2Dto;
 import com.zhang.dto.TableRequest;
 import com.zhang.entity.Page;
 import com.zhang.entity.Result;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.PathParam;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -138,9 +140,14 @@ public class RoleController {
     @RequiresPermissions("role:view")
     @RequestMapping(value = "all", method = RequestMethod.POST)
     @ResponseBody
-    public List<Role> findForAutoComplete(@RequestBody String name) {
+    public List<Select2Dto> findForAutoComplete(@RequestBody String name) {
         List<Role> roles = roleService.findForAutoComplete(name);
-        return roles;
+        List<Select2Dto> dtos = new ArrayList<Select2Dto>();
+        for (Role role : roles) {
+            Select2Dto dto = new Select2Dto(role.getId(), role.getName(), null);
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
     private void setCommonData(Model model) {

@@ -11,7 +11,6 @@ public class User extends BaseEntity {
 
     private Long id;
 
-//    @Column(name = "organization_id", length = 50)
     private Organization organization; //所属公司
 
     private String username;

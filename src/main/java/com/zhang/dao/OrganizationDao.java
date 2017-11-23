@@ -1,5 +1,6 @@
 package com.zhang.dao;
 
+import com.zhang.dto.TableRequest;
 import com.zhang.entity.Organization;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,11 @@ public interface OrganizationDao {
     List<Organization> findAll();
 
     List<Organization> findLikeName(String name);
+
+    Organization findOne(Long id);
+
+    List<Organization> findAllPageable(TableRequest request);
+
+    Long findAllCount(TableRequest request);
 
 }

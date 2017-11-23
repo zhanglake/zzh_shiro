@@ -59,4 +59,28 @@
         WHERE user_id = #{0}
     </update>
 
+    <update id="updateUser" parameterType="com.zhang.dto.UserUpdateDto">
+        UPDATE sys_user
+        SET username = #{userName}, organization_id = #{organizationId},
+            modified_date = #{modifiedDate}, modified_by = #{modifiedBy}
+        WHERE user_id = #{id}
+    </update>
+
+    <delete id="deleteUserRole" parameterType="java.lang.Long">
+        DELETE FROM sys_user_role WHERE user_id = #{id}
+    </delete>
+
+    <insert id="insertUserRole" parameterType="java.util.List">
+        INSERT INTO sys_user_role VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId}, #{item.roleId})
+        </foreach>
+    </insert>
+
+    <insert id="createUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.zhang.entity.User">
+        INSERT INTO sys_user (created_date, created_by, modified_date, modified_by, deleted, username, password, organization_id, salt, locked)
+        VALUES (#{createdDate}, #{createdBy}, #{modifiedDate}, #{modifiedBy}, 0, #{username},
+                #{password}, #{organization.id}, #{salt}, 0)
+    </insert>
+
 </mapper>

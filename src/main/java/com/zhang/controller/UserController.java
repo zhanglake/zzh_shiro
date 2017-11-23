@@ -1,10 +1,13 @@
 package com.zhang.controller;
 
 import com.zhang.dto.TableRequest;
+import com.zhang.dto.UserCreateDto;
+import com.zhang.dto.UserUpdateDto;
 import com.zhang.entity.Page;
 import com.zhang.entity.Result;
 import com.zhang.entity.User;
 import com.zhang.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +34,7 @@ public class UserController {
     @RequiresPermissions("user:view")
     @RequestMapping(method = RequestMethod.GET)
     public String page(Model model) {
-        return "user/user-list";
+        return "user/user";
     }
 
     /**
@@ -43,12 +46,46 @@ public class UserController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
     public Page findAllUsers(@RequestBody TableRequest request) {
+//        Long currentUserId = (Long) SecurityUtils.getSubject().getSession().getAttribute("currentUserId");
         Page<User> page = new Page<User>(request.getPageSize(), request.getPageNumber());
         page = userService.findAllPageable(page, request);
         return page;
     }
 
+    /**
+     * 创建用户信息
+     * @param dto
+     * @return
+     */
+    @RequiresPermissions("user:create")
+    @RequestMapping(value = "create", method = RequestMethod.POST)
+    @ResponseBody
+    public Result create(@RequestBody UserCreateDto dto) {
+        userService.createUser(dto);
+        return new Result();
+    }
 
+    /**
+     * 修改用户信息
+     * @param dto
+     * @return
+     */
+    @RequiresPermissions("user:update")
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    @ResponseBody
+    public Result update(@RequestBody UserUpdateDto dto) {
+        if (null != dto.getId() && null != dto.getUserName()) {
+            userService.updateUser(dto);
+            return new Result("修改成功");
+        }
+        return new Result(500, Result.ResultStatus.WARNING, "修改失败，请填写必填项目");
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
     @RequiresPermissions("user:delete")
     @RequestMapping(value = "{id}/delete", method = RequestMethod.GET)
     @ResponseBody
@@ -57,6 +94,13 @@ public class UserController {
         return new Result("删除成功");
     }
 
+    /**
+     * 锁定/解锁
+     *
+     * @param id
+     * @param status
+     * @return
+     */
     @RequiresPermissions("user:update")
     @RequestMapping(value = "{id}/{status}/status", method = RequestMethod.GET)
     @ResponseBody
@@ -70,4 +114,5 @@ public class UserController {
         }
         return new Result(mes);
     }
+
 }

@@ -7,12 +7,34 @@
         <id column="parent_id" property="parentId" jdbcType="INTEGER" />
     </resultMap>
 
+    <select id="findOne" resultMap="ResultMap" parameterType="java.lang.Long">
+        SELECT * FROM sys_organization WHERE id = #{id} AND deleted = 0
+    </select>
+
     <select id="findAll" resultMap="ResultMap">
         SELECT * FROM sys_organization WHERE deleted = 0
     </select>
 
     <select id="findLikeName" resultMap="ResultMap" parameterType="java.lang.String">
         SELECT * FROM sys_organization WHERE name LIKE #{name} AND deleted = 0
+    </select>
+
+    <select id="findAllPageable" resultMap="ResultMap" parameterType="com.zhang.dto.TableRequest">
+        SELECT * FROM sys_organization
+        WHERE deleted = 0
+        <if test="searchText != null and searchText != ''">
+            AND name LIKE #{searchText}
+        </if>
+        ORDER BY id DESC
+        LIMIT #{pageNumber}, #{pageSize}
+    </select>
+
+    <select id="findAllCount" resultType="java.lang.Long" parameterType="com.zhang.dto.TableRequest">
+        SELECT count(*) FROM sys_organization
+        WHERE deleted = 0
+        <if test="searchText != null and searchText != ''">
+            AND name LIKE #{searchText}
+        </if>
     </select>
 
 </mapper>

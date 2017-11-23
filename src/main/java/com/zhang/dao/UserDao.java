@@ -1,6 +1,7 @@
 package com.zhang.dao;
 
 import com.zhang.dto.TableRequest;
+import com.zhang.dto.UserUpdateDto;
 import com.zhang.entity.Page;
 import com.zhang.entity.User;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,29 @@ public interface UserDao {
     void deleteOne(Long id);
 
     void changeStatus(Long id, Boolean status);
+
+    /**
+     * 更新user信息
+     * @param dto
+     */
+    void updateUser(UserUpdateDto dto);
+
+    /**
+     * 删除用户原来关联的角色
+     * @param userId
+     */
+    void deleteUserRole(Long userId);
+
+    /**
+     * 插入user-role关系
+     * @param list
+     */
+    void insertUserRole(List list);
+
+    /**
+     * 新增用户
+     * @param user
+     */
+    void createUser(User user);
+
 }

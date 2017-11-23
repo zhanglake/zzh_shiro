@@ -31,4 +31,6 @@ public interface RoleService {
 
     List<Role> findForAutoComplete(String name);
 
+    List<Role> findByIds(List<Long> roleIds);
+
 }

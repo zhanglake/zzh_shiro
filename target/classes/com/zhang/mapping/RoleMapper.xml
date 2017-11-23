@@ -58,6 +58,16 @@
         SELECT * FROM sys_role WHERE role_name LIKE #{name} AND deleted = 0
     </select>
 
+    <select id="findByIds" resultMap="ResultMap" parameterType="java.util.List">
+        SELECT * FROM sys_role r1
+        LEFT JOIN sys_role_resource rr ON r1.role_id = rr.role_id
+        LEFT JOIN sys_resource r2 ON r2.resource_id = rr.resource_id
+        WHERE r1.role_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <update id="updateToDelete" parameterType="java.lang.Long">
         UPDATE sys_role SET deleted = 1 WHERE role_id = #{id}
     </update>

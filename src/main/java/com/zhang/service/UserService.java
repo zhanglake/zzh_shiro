@@ -1,7 +1,9 @@
 package com.zhang.service;
 
 import com.zhang.dto.TableRequest;
+import com.zhang.dto.UserCreateDto;
 import com.zhang.dto.UserDto;
+import com.zhang.dto.UserUpdateDto;
 import com.zhang.entity.Page;
 import com.zhang.entity.User;
 
@@ -26,4 +28,8 @@ public interface UserService {
     void deleteOne(Long id);
 
     void changeStatus(Long id, Boolean status);
+
+    void updateUser(UserUpdateDto dto);
+
+    void createUser(UserCreateDto dto);
 }

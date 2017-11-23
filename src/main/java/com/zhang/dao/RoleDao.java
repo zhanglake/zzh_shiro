@@ -34,4 +34,6 @@ public interface RoleDao {
     void updateRole(Role role);
 
     void deleteRoleResource(Long id);
+
+    List<Role> findByIds(List<Long> roleIds);
 }
